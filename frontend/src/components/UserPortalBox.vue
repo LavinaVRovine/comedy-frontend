@@ -14,15 +14,15 @@
 
 
     <div class="buttons">
-      <template v-if="userPortal.watching">
-        <button @click="switchFollowStatusPortal(userPortal.id)" class="button is-danger">Unfollow</button>
+      <template v-if="thisPageUserPortal.watching">
+        <button @click="doUpdate(thisPageUserPortal)" class="button is-danger">Unfollow</button>
       </template>
       <template v-else>
-        <button @click="switchFollowStatusPortal(userPortal.id)" class="button is-danger">Follow</button>
+        <button @click="doUpdate( thisPageUserPortal)" class="button is-danger">Follow</button>
       </template>
 
 
-      <router-link v-bind:to="currentRoutePath + userPortal.portal.get_url_slug" class="button is-dark">
+      <router-link v-bind:to="currentRoutePath + thisPageUserPortal.portal.get_url_slug" class="button is-dark">
           setup
         </router-link>
 
@@ -36,31 +36,56 @@
 
 <script>
 import axios from "axios";
+import {useSwitchFollowStatusPortal} from "@/updateUserPortal";
+
 
 export default {
   name: "UserPortalBox",
   props: {
     userPortal: Object
   },
+  setup(){
+    let {data_, doUpdate} = useSwitchFollowStatusPortal()
+
+    return {
+      data_,
+      doUpdate
+    }
+
+  },
+  data() {
+    return {
+      thisPageUserPortal: this.userPortal
+    }
+  },
   computed: {
     currentRoutePath(){return this.$route.path}
   },
+  // const {data, error} = useSwitchFollowStatusPortal(thisPageUserPortal)
   methods: {
-    async switchFollowStatusPortal(userPortalId){
-
-      axios.put(`/api/v1/portals/me/portals/${userPortalId}`, {"watching": !this.userPortal.watching})
-              .then(response => {
-                debugger
-                this.userPortal = response.data
-                skoncil jsem tady pze se mi nedari tady tohle mutatnout
-              })
-              .catch(error => {
-                debugger
-                console.log(error)
-              })
+    // switchFollowStatusPortal(thisPageUserPortal) {
+    //   const data = useSwitchFollowStatusPortal(thisPageUserPortal)
+    //   debugger
+    //
+    // },
 
 
-    },
+    // async switchFollowStatusPortal(userPortalId){
+    //
+    //   axios.put(`/api/v1/portals/me/portals/${userPortalId}`, {"watching": !this.thisPageUserPortal.watching})
+    //           .then(response => {
+    //             this.thisPageUserPortal = response.data
+    //             // this is only in scope, ie in this element. I should emit it to parent https://javascript.plainenglish.io/avoid-mutating-a-prop-directly-7b127b9bca5b
+    //             // but i dont think its necessary as the parent should just hit api any way.
+    //             // IF problems I'd say this should be it so see the link
+    //           })
+    //           .catch(error => {
+    //
+    //             console.log(error)
+    //           })
+    //
+    //
+    // },
   }
 
 }
