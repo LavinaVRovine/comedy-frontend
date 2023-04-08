@@ -10,10 +10,10 @@
 
         <div class="buttons">
           <template v-if="userPortal.watching">
-            <button @click="unfollow()" class="button is-danger">Unfollow</button>
+            <button @click="switchFollowStatusPortal()" class="button is-danger">Unfollow</button>
           </template>
           <template v-else>
-            <button @click="follow()" class="button is-danger">Follow</button>
+            <button @click="switchFollowStatusPortal()" class="button is-danger">Follow</button>
           </template>
 
         </div>
@@ -75,8 +75,25 @@ export default {
             console.log(error)
           })
       this.$store.commit('setIsLoading', false)
-    }
-  }
+    },
+
+    async switchFollowStatusPortal() {
+
+      axios.put(`/api/v1/portals/me/portals/${this.userPortal.id}`, {"watching": !this.userPortal.watching})
+          .then(response => {
+            this.userPortal = response.data
+            // this is only in scope, ie in this element. I should emit it to parent https://javascript.plainenglish.io/avoid-mutating-a-prop-directly-7b127b9bca5b
+            // but i dont think its necessary as the parent should just hit api any way.
+            // IF problems I'd say this should be it so see the link
+
+            // oh i see, i hacked it by getting the portal from the api, meaning iam not working
+            // from the one from parent template but a new obj
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    },
+  },
 }
 </script>
 

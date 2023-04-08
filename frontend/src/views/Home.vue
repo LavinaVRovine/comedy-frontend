@@ -102,7 +102,6 @@ export default {
     },
     handleInfinityScroll(isVisible) {
       if (!isVisible) {
-        console.log("nein");
         return;
       }
       if (this.page >= this.maxPages || this.page === 0) {
@@ -110,7 +109,6 @@ export default {
       }
       this.page++
       this.getLatestContent()
-      console.log("hehe");
     },
   }
 }

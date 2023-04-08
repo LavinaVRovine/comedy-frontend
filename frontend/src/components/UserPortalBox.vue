@@ -15,10 +15,10 @@
 
     <div class="buttons">
       <template v-if="thisPageUserPortal.watching">
-        <button @click="doUpdate(thisPageUserPortal)" class="button is-danger">Unfollow</button>
+        <button @click="switchFollowStatusPortal()" class="button is-danger">Unfollow</button>
       </template>
       <template v-else>
-        <button @click="doUpdate( thisPageUserPortal)" class="button is-danger">Follow</button>
+        <button @click="switchFollowStatusPortal( )" class="button is-danger">Follow</button>
       </template>
 
 
@@ -37,22 +37,38 @@
 <script>
 import axios from "axios";
 import {useSwitchFollowStatusPortal} from "@/updateUserPortal";
-
+import {onMounted, reactive, ref} from "vue"
 
 export default {
   name: "UserPortalBox",
   props: {
     userPortal: Object
   },
-  setup(){
-    let {data_, doUpdate} = useSwitchFollowStatusPortal()
 
-    return {
-      data_,
-      doUpdate
-    }
-
-  },
+  // // TODO: i failed to figure out that composition API thingy. Would be nice though
+  // setup(props){
+  //   //const thisPageUserPortal = ref(this.userPortal)
+  //   const userPortal = props.userPortal
+  //   debugger
+  //   // onMounted((props) => {
+  //   //   debugger
+  //   //   this.thisPageUserPortal = userPortal
+  //   //     }
+  //   //
+  //   // )\
+  //
+  //   const {data_, doUpdate} = useSwitchFollowStatusPortal(userPortal);
+  //   //let doUpdate = () => {console.log('called')}
+  //   const thisPageUserPortal = data_
+  //   console.log(typeof doUpdate)
+  //   //const userPortal = data_
+  //   debugger
+  //   return {
+  //     data_,
+  //     doUpdate,
+  //     thisPageUserPortal
+  //   }
+  // },
   data() {
     return {
       thisPageUserPortal: this.userPortal
@@ -68,24 +84,20 @@ export default {
     //   debugger
     //
     // },
+    // CARE: this is ctrl+c with other component. dunno how to reuse
+    async switchFollowStatusPortal(){
 
-
-    // async switchFollowStatusPortal(userPortalId){
-    //
-    //   axios.put(`/api/v1/portals/me/portals/${userPortalId}`, {"watching": !this.thisPageUserPortal.watching})
-    //           .then(response => {
-    //             this.thisPageUserPortal = response.data
-    //             // this is only in scope, ie in this element. I should emit it to parent https://javascript.plainenglish.io/avoid-mutating-a-prop-directly-7b127b9bca5b
-    //             // but i dont think its necessary as the parent should just hit api any way.
-    //             // IF problems I'd say this should be it so see the link
-    //           })
-    //           .catch(error => {
-    //
-    //             console.log(error)
-    //           })
-    //
-    //
-    // },
+      axios.put(`/api/v1/portals/me/portals/${this.thisPageUserPortal.id}`, {"watching": !this.thisPageUserPortal.watching})
+              .then(response => {
+                this.thisPageUserPortal = response.data
+                // this is only in scope, ie in this element. I should emit it to parent https://javascript.plainenglish.io/avoid-mutating-a-prop-directly-7b127b9bca5b
+                // but i dont think its necessary as the parent should just hit api any way.
+                // IF problems I'd say this should be it so see the link
+              })
+              .catch(error => {
+                console.log(error)
+              })
+    },
   }
 
 }

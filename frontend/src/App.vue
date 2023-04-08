@@ -39,7 +39,7 @@
 <!--                <router-link to="/" class="button is-light">My account</router-link>-->
 <!--            </template>-->
 <!--          <router-link to="/winter" class="navbar-item">Winter</router-link>-->
-
+          <router-link to="/entertain-me" class="navbar-item">Entertain Me</router-link>
           <div class="navbar-item">
             <div class="buttons">
               <template v-if="$store.state.isAuthenticated">

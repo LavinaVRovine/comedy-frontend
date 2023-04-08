@@ -7,6 +7,7 @@ import MyAccount from "@/views/MyAccount";
 import Portals from "@/views/Portals";
 import Portal from "@/views/Portal";
 import myAccountContentSource from "@/views/MyAccountContentSource";
+import EntertainMe from "@/views/EntertainMe";
 
 
 const routes = [
@@ -55,7 +56,12 @@ const routes = [
     path: "/my-account/:portal_slug/",
     name: "My Portal",
     component: myAccountContentSource,
-  }
+  },
+  {
+    path: "/entertain-me",
+    name: "Entertain Me",
+    component: EntertainMe,
+  },
 ]
 
 const router = createRouter({
