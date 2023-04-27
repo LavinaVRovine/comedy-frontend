@@ -15,24 +15,16 @@
           Latest something
         </h2>
       </div>
-      <div>
-        <div class="column is-12" v-for="content in latestContents" v-bind:key="content._id">
 
-          <div class="box">
-            <figure class="image mb-4">
-              <!--            <img :src="content.thumbnails.high.url">-->
-            </figure>
+      <ContentBox
+          v-for="content in latestContents"
+          v-bind:key="content._id"
+          v-bind:content="content"/>
 
-            <h3 class="is-size-4">{{ content.title }}</h3>
-            <p>{{ content.description }}</p>
-          </div>
 
-        </div>
-        <div v-observe-visibility="handleInfinityScroll">
+      <div v-observe-visibility="handleInfinityScroll">
 
-        </div>
       </div>
-
     </div>
 
 
@@ -41,7 +33,7 @@
 
 <script>
 import axios from 'axios'
-
+import ContentBox from "@/components/ContentBox";
 
 export default {
   name: 'Home',
@@ -52,7 +44,7 @@ export default {
       maxPages: 10,
     }
   },
-  components: {},
+  components: {ContentBox},
   mounted() {
     this.getLatestContent()
   },
@@ -72,17 +64,17 @@ export default {
     //     console.log(error)
     //   })
     // },
-    async getLatestContent(){
+    async getLatestContent() {
 
 
       try {
         const response = await axios.get(
-          'api/v1/contents/latest-contents/'
+            'api/v1/contents/latest-contents/'
         );
         // JSON responses are automatically parsed.
         const data = await response.data;
         this.latestContents.push(...data);
-        if (this.page === 0){
+        if (this.page === 0) {
           this.page = 1
         }
 

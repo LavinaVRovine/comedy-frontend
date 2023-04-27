@@ -1,10 +1,10 @@
 <template>
-
+<!--TODO: add portal box-->
   <div class="column is-3">
     <div class="box">
       <figure class="image mb-4">
         <router-link v-bind:to="currentRoutePath + userPortal.portal.get_url_slug" class="button is-dark">
-          <img v-bind:src="userPortal.portal.get_thumbnail">
+          <img v-bind:src="userPortal.portal.get_thumbnails" alt="portal-img-thumbnail">
         </router-link>
 
 
@@ -22,13 +22,11 @@
       </template>
 
 
-      <router-link v-bind:to="currentRoutePath + thisPageUserPortal.portal.get_url_slug" class="button is-dark">
-          setup
+      <router-link
+          :to="{path: currentRoutePath + thisPageUserPortal.portal.get_url_slug, query: {'user_portal_id':thisPageUserPortal.id}}"
+          class="button is-dark">
+      setup
         </router-link>
-
-
-
-
     </div>
 
   </div>
@@ -38,6 +36,7 @@
 import axios from "axios";
 import {useSwitchFollowStatusPortal} from "@/updateUserPortal";
 import {onMounted, reactive, ref} from "vue"
+import PortalBox from "@/components/PortalBox";
 
 export default {
   name: "UserPortalBox",
@@ -74,6 +73,7 @@ export default {
       thisPageUserPortal: this.userPortal
     }
   },
+  components: {PortalBox},
   computed: {
     currentRoutePath(){return this.$route.path}
   },
@@ -87,7 +87,7 @@ export default {
     // CARE: this is ctrl+c with other component. dunno how to reuse
     async switchFollowStatusPortal(){
 
-      axios.put(`/api/v1/portals/me/portals/${this.thisPageUserPortal.id}`, {"watching": !this.thisPageUserPortal.watching})
+      axios.put(`/api/v1/user-portals/me/${this.thisPageUserPortal.id}`, {"watching": !this.thisPageUserPortal.watching})
               .then(response => {
                 this.thisPageUserPortal = response.data
                 // this is only in scope, ie in this element. I should emit it to parent https://javascript.plainenglish.io/avoid-mutating-a-prop-directly-7b127b9bca5b

@@ -3,7 +3,7 @@ import axios from "axios";
 
 export async function switchFollowStatusPortal(userPortal){
         debugger
-      axios.put(`/api/v1/portals/me/portals/${userPortal.id}`, {"watching": !userPortal.watching})
+      axios.put(`/api/v1/user-portals/me/${userPortal.id}`, {"watching": !userPortal.watching})
               .then(response => {
                   // can i do this actually?
                 userPortal = response.data

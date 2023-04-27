@@ -64,7 +64,7 @@ export default {
         async getMyPortals() {
           // this.$store.commit('setIsLoading', true)
           await axios
-              .get('/api/v1/portals/me/portals/')
+              .get('/api/v1/user-portals/me/')
               .then(response => {
 
                 this.myPortals = response.data

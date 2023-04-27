@@ -36,30 +36,12 @@
           Content
         </h2>
       </div>
+      <ContentBox
+            v-for="content in recommendedContent"
+            v-bind:key="content._id"
+            v-bind:content="content" />
 
     </div>
-
-<!--    FIXME copypaste -> component-->
-    <div>
-        <div class="column is-12" v-for="content in recommendedContent" v-bind:key="content._id">
-
-          <div class="box">
-            <figure class="image mb-4">
-              <!--            <img :src="content.thumbnails.high.url">-->
-            </figure>
-
-            <h3 class="is-size-4">{{ content.title }}</h3>
-            <p>{{ content.description }}</p>
-          </div>
-
-        </div>
-<!--        <div v-observe-visibility="handleInfinityScroll">-->
-
-<!--        </div>-->
-      </div>
-
-
-
 
 
   </div>
@@ -67,6 +49,7 @@
 
 <script>
 import axios from "axios";
+import ContentBox from "@/components/ContentBox";
 export default {
   name: "EntertainMe",
   data() {
@@ -75,7 +58,9 @@ export default {
       recommendMinutes: 4,
     }
   },
-  components: {},
+  components: {
+    ContentBox
+  },
   methods: {
 
     async getRecommendedContent(mins) {

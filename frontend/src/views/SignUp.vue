@@ -5,9 +5,9 @@
         <h1 class="title">Sign Up</h1>
         <form @submit.prevent="submitForm">
           <div class="field">
-            <label>Username</label>
+            <label>Email</label>
             <div class="control">
-              <input type="text" class="input" v-model="username">
+              <input type="email" class="input" v-model="email">
             </div>
           </div>
 
@@ -56,7 +56,7 @@ export default {
   name: "SignUp",
   data() {
     return {
-      username: '',
+      email: '',
       password: '',
       password2: '',
       errors: []
@@ -65,8 +65,8 @@ export default {
   methods: {
     submitForm() {
       this.errors = []
-      if (this.username === '') {
-        this.errors.push('The username is missing')
+      if (this.email === '') {
+        this.errors.push('The email is missing')
       }
       if (this.password === '') {
         this.errors.push('The password is missing')
@@ -78,7 +78,7 @@ export default {
 
       if (!this.errors.length) {
         const formData = {
-          username: this.username,
+          email: this.email,
           password: this.password
         }
 

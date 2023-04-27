@@ -10,7 +10,7 @@ export function useSwitchFollowStatusPortal(currentUserPortal) {
     let error = ref(null)
     let data = reactive(currentUserPortal);
     async function fetchPortal(currentUserPortal) {
-        axios.put(`/api/v1/portals/me/portals/${currentUserPortal.id}`, {"watching": !currentUserPortal.watching})
+        axios.put(`/api/v1/user-portals/me/${currentUserPortal.id}`, {"watching": !currentUserPortal.watching})
         .then(response => {
             // data.value = response.data
             debugger
