@@ -1,13 +1,12 @@
 <template>
-  <div class="column is-3">
+
     <div class="box">
       <h3 class="is-size-4">{{ portal.name }}</h3>
       <figure class="image mb-4">
         <img v-bind:src="portal.get_thumbnails">
       </figure>
-
     </div>
-  </div>
+
 </template>
 
 <script>

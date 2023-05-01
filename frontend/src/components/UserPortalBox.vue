@@ -1,17 +1,11 @@
 <template>
-<!--TODO: add portal box-->
+
   <div class="column is-3">
-    <div class="box">
-      <figure class="image mb-4">
-        <router-link v-bind:to="currentRoutePath + userPortal.portal.get_url_slug" class="button is-dark">
-          <img v-bind:src="userPortal.portal.get_thumbnails" alt="portal-img-thumbnail">
-        </router-link>
-
-
-      </figure>
-      <h3 class="is-size-4">{{ userPortal.portal.name }}</h3>
-    </div>
-
+<!--TODO: tohle by melo byt uzito jako component i v mycontent source-->
+  <router-link v-bind:to="currentRoutePath + userPortal.portal.get_url_slug" class="button is-dark">
+    <PortalBox v-bind:portal="userPortal.portal" v-bind:key="userPortal.id">
+    </PortalBox>
+  </router-link>
 
     <div class="buttons">
       <template v-if="thisPageUserPortal.watching">
@@ -20,7 +14,6 @@
       <template v-else>
         <button @click="switchFollowStatusPortal( )" class="button is-danger">Follow</button>
       </template>
-
 
       <router-link
           :to="{path: currentRoutePath + thisPageUserPortal.portal.get_url_slug, query: {'user_portal_id':thisPageUserPortal.id}}"

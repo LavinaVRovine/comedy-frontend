@@ -14,9 +14,14 @@
           <button @click="switchFollowStatusPortal()" class="button is-danger">Follow</button>
         </template>
 
+        <template v-if="userPortal.portal.syncable">
+          <template v-if="userPortal.syncable">
+            <button class="button" @click="syncMyPortalWithRemote()" >Sync with remote </button>
+          </template>
+          <template v-else>
+            <button class="button is-disabled" disabled>Synced at: {{userPortal.last_remote_sync_at}}</button>
+          </template>
 
-        <template v-if="userPortal.syncable">
-          <button class="button">Sync with remote</button>
         </template>
 
 
@@ -36,7 +41,7 @@
     </div>
 
 
-    <div class="columns is-multiline">
+    <div class="columns is-multiline" v-if="recommendedSources.length > 0">
       <div class="column is-12">
         <h2 class="is-size-2 has-text-centered">Recommended Sources</h2>
       </div>
@@ -106,7 +111,23 @@ export default {
           });
      }
     },
+    async syncMyPortalWithRemote() {
+      this.$store.commit('setIsLoading', true)
 
+      await axios
+          .get(`/api/v1/user-portals/me/sync/${this.userPortal.id}`)
+          .then(response => {
+            debugger
+            this.getMyPortal()
+            //this.userPortal = response.data
+
+          })
+          .catch(error => {
+            debugger
+            console.log(error)
+          })
+      this.$store.commit('setIsLoading', false)
+    },
     async getMyPortal() {
       this.$store.commit('setIsLoading', true)
       const portal_slug = this.$route.params.portal_slug

@@ -8,15 +8,7 @@
       </div>
     </section>
 
-
-    <div class="columns is-multiline">
-      <div class="column is-12">
-        <h2 class="is-size-2 has-text-centered">
-          Latest something
-        </h2>
-      </div>
-
-      <ContentBox
+    <ContentBox
           v-for="content in latestContents"
           v-bind:key="content._id"
           v-bind:content="content"/>
@@ -25,7 +17,6 @@
       <div v-observe-visibility="handleInfinityScroll">
 
       </div>
-    </div>
 
 
   </div>
@@ -41,6 +32,7 @@ export default {
     return {
       latestContents: [],
       page: 0,
+      skip:0,
       maxPages: 10,
     }
   },
@@ -69,14 +61,16 @@ export default {
 
       try {
         const response = await axios.get(
-            'api/v1/contents/latest-contents/'
+            'api/v1/contents/latest-contents/', {params: {"skip": this.skip, "limit": 5}}
         );
         // JSON responses are automatically parsed.
         const data = await response.data;
         this.latestContents.push(...data);
         if (this.page === 0) {
           this.page = 1
+
         }
+        this.skip += 5
 
       } catch (error) {
         console.log(error);
